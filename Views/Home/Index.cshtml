@@ -1,17 +1,47 @@
+@model Marketplace.ViewModel.PaginatedList<Marketplace.Models.Product>
+
 @{
-    Layout = "";
+    Layout = "_Layout";
+    ViewData["Title"] = "Home";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="~/css/output.css" rel="stylesheet" />
-  <title>Hasil Tailwind</title>
-</head>
-<body>
-  <h1 class="tw-text-red-500">Setup finished</h1>
-</body>
-</html>
+<!-- Hero Section -->
+<section class="tw-bg-blue-600 tw-text-white tw-text-center tw-py-20">
+    <div class="tw-container tw-mx-auto">
+        <h1 class="tw-text-4xl tw-font-bold">Welcome to MyShop</h1>
+        <p class="tw-text-lg tw-mt-4">Discover the best products at unbeatable prices.</p>
+        <a href="/products" class="tw-mt-6 tw-inline-block tw-bg-white tw-text-blue-600 tw-py-2 tw-px-6 tw-rounded-lg tw-font-semibold hover:tw-bg-gray-200">
+            Shop Now
+        </a>
+    </div>
+</section>
+
+<!-- Product List Section -->
+<section class="tw-container tw-mx-auto tw-my-12">
+    <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Featured Products</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-6 tw-px-10">
+            @foreach (var product in Model)
+            {
+                <partial name="Components/_ProductCard" model="product" />
+            }
+        </div>
+        <div class="tw-flex tw-justify-center tw-items-center tw-self-center tw-mt-8">
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" class="tw-mx-2 tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded">Previous</a>
+            }
+            <span class="tw-mx-4 tw-text-lg tw-font-semibold">Page @Model.PageIndex of @Model.TotalPages</span>
+            @if (Model.HasNextPage)
+            {
+                <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="tw-mx-2 tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded">Next</a>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="tw-text-center tw-text-gray-600">No products available at the moment.</p>
+    }
+</section>

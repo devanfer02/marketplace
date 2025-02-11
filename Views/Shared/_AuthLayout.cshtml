@@ -16,10 +16,10 @@
     <main class="tw-w-full tw-max-w-sm tw-p-6 tw-bg-white tw-rounded-lg tw-shadow-md">
         <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-text-gray-700">@ViewData["Title"]</h2>
 
-        @RenderBody() <!-- This is where child views (Login, Register, etc.) will be injected -->
+        @RenderBody() 
 
         <p class="tw-mt-4 tw-text-sm tw-text-center tw-text-blue-600">
-            @RenderSection("AuthLinks", required: false) <!-- Section for extra links like "Sign Up" -->
+            @RenderSection("AuthLinks", required: false) 
         </p>
     </main>
 </body>

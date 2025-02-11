@@ -1,0 +1,13 @@
+﻿@model Marketplace.Models.Product
+
+<div class="tw-bg-white tw-rounded-lg tw-shadow-md tw-overflow-hidden tw-w-full tw-mx-auto">
+    <img src="https://placehold.co/300" alt="@Model.Name" class="tw-w-full tw-h-40 tw-object-cover">
+    <div class="tw-p-4">
+        <h3 class="tw-text-lg tw-font-semibold">@Model.Name</h3>
+        <p class="tw-text-gray-600">@Model.Price.ToString("C")</p>
+        <p class="tw-text-sm tw-text-gray-500">Stock: @Model.Stock</p>
+        <button class="tw-mt-2 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded-md tw-w-full hover:tw-bg-blue-600">
+            Add to Cart
+        </button>
+    </div>
+</div>

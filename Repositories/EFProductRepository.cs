@@ -5,7 +5,7 @@ namespace Marketplace.Repositories
 {
     public interface IProductRepository
     {
-        Task<ICollection<Product>> FetchAll();
+        ICollection<Product> FetchAll();
         Task<Product> FetchById(int id);
         Task<Product> CreateProduct(Product product);
         Task<Product> UpdateProduct(Product product);
@@ -20,17 +20,14 @@ namespace Marketplace.Repositories
             _access = access;
         }
 
+        public ICollection<Product> FetchAll() => _access.Products.OrderByDescending(p => p.CreatedAt).ToList();
+
         public Task<Product> CreateProduct(Product product)
         {
             throw new NotImplementedException();
         }
 
         public Task<Product> DeleteProduct(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ICollection<Product>> FetchAll()
         {
             throw new NotImplementedException();
         }

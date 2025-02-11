@@ -38,6 +38,7 @@ namespace Marketplace.Infra.Server
             
             // register for DI
             builder.Services.AddScoped<IUserRepository, EFUserRepository>();
+            builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 
             return builder;
         }
