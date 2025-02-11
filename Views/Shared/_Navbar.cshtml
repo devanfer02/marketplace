@@ -1,15 +1,37 @@
-﻿<nav class="tw-bg-white tw-shadow-md tw-py-4 tw-px-10">
+﻿@using Marketplace.Packages.Auth
+@inject AuthManager AuthManager
+
+@{
+    var user = AuthManager.GetUser();
+    var isAuthenticated = user != null;
+}
+
+<nav class="tw-bg-white tw-shadow-md tw-py-4 tw-px-10">
     <div class="tw-container tw-mx-auto tw-flex tw-justify-between tw-items-center">
-        <!-- Logo -->
         <a href="/" class="tw-text-xl tw-font-bold tw-text-blue-600">MyShop</a>
 
-        <!-- Navigation Links -->
         <ul class="tw-flex tw-gap-6">
             <li><a href="/" class="tw-text-gray-700 tw-hover:text-blue-500">Home</a></li>
             <li><a href="/products" class="tw-text-gray-700 tw-hover:text-blue-500">Products</a></li>
             <li><a href="/about" class="tw-text-gray-700 tw-hover:text-blue-500">About</a></li>
-            <li><a href="@Url.Action("Register", "Auth")" class="tw-text-gray-700 tw-hover:text-blue-500">Register</a></li>
-            <li><a href="@Url.Action("Login", "Auth")" class="tw-text-gray-700 tw-hover:text-blue-500">Login</a></li>
+
+            @if (isAuthenticated)
+            {
+                <li>
+                    <span class="tw-text-gray-700 tw-font-semibold">Hello, @user.Name!</span>
+                </li>
+                <li>
+                    <a href="@Url.Action("Logout", "Auth")" class="tw-text-red-600 tw-font-semibold tw-hover:text-red-800">
+                        Logout
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("Register", "Auth")" class="tw-text-gray-700 tw-hover:text-blue-500">Register</a></li>
+                <li><a href="@Url.Action("Login", "Auth")" class="tw-text-gray-700 tw-hover:text-blue-500">Login</a></li>
+            }
         </ul>
     </div>
 </nav>
+

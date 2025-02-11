@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Marketplace.Infra.Exceptions;
 using System.Security.Claims;
+using Marketplace.Packages.Auth;
 
 namespace Marketplace.Controllers
 {
@@ -13,10 +14,16 @@ namespace Marketplace.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly IUserRepository _userRepository;
-        public AuthController(ILogger<AuthController> logger, IUserRepository userRepository)
+        private readonly AuthManager _authManager;
+        public AuthController(
+            ILogger<AuthController> logger, 
+            IUserRepository userRepository, 
+            AuthManager authManager
+        )
         {
             _logger = logger;
             _userRepository = userRepository;
+            _authManager = authManager;
         }
 
         [HttpGet]
@@ -53,18 +60,7 @@ namespace Marketplace.Controllers
                     return View("Login");
                 }
 
-                var claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Name, user.Fullname),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Id)
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity)
-                );
+                await _authManager.SignInAsync(user);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -108,7 +104,7 @@ namespace Marketplace.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _authManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Marketplace.Infra.Configuration;
 using Marketplace.Infra.Database;
+using Marketplace.Packages.Auth;
 using Marketplace.Packages.HostedServices;
 using Marketplace.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,6 +17,7 @@ namespace Marketplace.Infra.Server
             // Add services to the container.
             builder.Services.Configure<AppConfiguration>(builder.Configuration);
             builder.Services.AddRazorPages();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllersWithViews().AddViewOptions(options =>
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = true;
@@ -39,6 +41,7 @@ namespace Marketplace.Infra.Server
             // register for DI
             builder.Services.AddScoped<IUserRepository, EFUserRepository>();
             builder.Services.AddScoped<IProductRepository, EFProductRepository>();
+            builder.Services.AddScoped<AuthManager>();
 
             return builder;
         }
