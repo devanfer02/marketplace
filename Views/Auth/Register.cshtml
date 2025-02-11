@@ -1,0 +1,40 @@
+﻿@using Marketplace.ViewModel
+@model RegisterViewModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Register";
+}
+
+<form method="post" asp-action="@Url.Action("RegisterUser", "Auth")" class="tw-mt-4">
+    @Html.AntiForgeryToken()
+    <div class="tw-mt-2">
+        <label class="tw-block tw-text-sm tw-text-gray-700">Fullname</label>
+        <input type="text" asp-for="Fullname" class="tw-w-full tw-px-4 tw-py-2 tw-mt-2 tw-border tw-rounded-lg tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500" required />
+        <span asp-validation-for="Fullname" class="tw-text-red-500 tw-text-sm"></span>
+    </div>
+    <div class="tw-mt-2">
+        <label class="tw-block tw-text-sm tw-text-gray-700">Email</label>
+        <input type="email" asp-for="Email" class="tw-w-full tw-px-4 tw-py-2 tw-mt-2 tw-border tw-rounded-lg tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500" required />
+        <span asp-validation-for="Email" class="tw-text-red-500 tw-text-sm"></span>
+    </div>
+    <div class="tw-mt-2">
+        <label class="tw-block tw-text-sm tw-text-gray-700">Password</label>
+        <input type="password" asp-for="Password" class="tw-w-full tw-px-4 tw-py-2 tw-mt-2 tw-border tw-rounded-lg tw-focus:outline-none tw-focus:ring-2 tw-focus:ring-blue-500" required />
+        <span asp-validation-for="Password" class="tw-text-red-500 tw-text-sm"></span>
+    </div>
+    <button type="submit" class="tw-w-full tw-px-4 tw-py-2 tw-mt-6 tw-font-semibold tw-text-white tw-bg-blue-500 tw-rounded-lg hover:tw-bg-blue-600">
+        Register
+    </button>
+    @if(!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="tw-mt-2 tw-text-center">
+          <span class="tw-text-red-500 tw-text-md">@ViewBag.ErrorMessage</span>
+        </div>
+    }
+
+</form>
+
+@section AuthLinks {
+    Already have an account? <a href="@Url.Action("Login", "Auth")" class="tw-text-blue-500 hover:tw-underline">Sign in</a>
+}

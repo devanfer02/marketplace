@@ -1,0 +1,27 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null; // Prevents using the main site layout
+    ViewData["Title"] = ViewData["Title"] ?? "Auth";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/output.css" rel="stylesheet" />
+    <title>@ViewData["Title"]</title>
+</head>
+<body class="tw-flex tw-h-screen tw-justify-center tw-items-center tw-bg-gray-100">
+    <main class="tw-w-full tw-max-w-sm tw-p-6 tw-bg-white tw-rounded-lg tw-shadow-md">
+        <h2 class="tw-text-2xl tw-font-semibold tw-text-center tw-text-gray-700">@ViewData["Title"]</h2>
+
+        @RenderBody() <!-- This is where child views (Login, Register, etc.) will be injected -->
+
+        <p class="tw-mt-4 tw-text-sm tw-text-center tw-text-blue-600">
+            @RenderSection("AuthLinks", required: false) <!-- Section for extra links like "Sign Up" -->
+        </p>
+    </main>
+</body>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+</html>

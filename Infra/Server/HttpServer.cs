@@ -1,5 +1,8 @@
 ﻿using Marketplace.Infra.Configuration;
 using Marketplace.Infra.Database;
+using Marketplace.Packages.HostedServices;
+using Marketplace.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infra.Server
@@ -13,11 +16,28 @@ namespace Marketplace.Infra.Server
             // Add services to the container.
             builder.Services.Configure<AppConfiguration>(builder.Configuration);
             builder.Services.AddRazorPages();
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = true;
+            });
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "/auth/login";
+                options.AccessDeniedPath = "/";
+            });
 
             var appSettings = builder.Configuration.GetSection(nameof(AppConfiguration)).Get<AppConfiguration>()!;
 
             builder.Services.AddDbContext<EFDBAccess>(options => options.UseNpgsql(appSettings.Database.DefaultConnection));
+
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddHostedService<TailwindHostedService>();
+            }
+            
+            // register for DI
+            builder.Services.AddScoped<IUserRepository, EFUserRepository>();
 
             return builder;
         }
@@ -44,6 +64,7 @@ namespace Marketplace.Infra.Server
             app.UseStaticFiles();
             app.UseRouting();
             app.MapControllers();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapRazorPages();
             app.Run();
