@@ -86,7 +86,7 @@ namespace Marketplace.ViewModel
         public int Page { get; set; } = 1;
 
         [FromQuery(Name = "size")]
-        public int Size { get; set; } = 10;
+        public int Size { get; set; } = 12;
 
         [FromQuery(Name = "name")]
         public string Name { get; set; } = "";
