@@ -17,10 +17,15 @@ namespace Marketplace.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index([FromQuery] int page = 1, [FromQuery] int size = 12)
+        public IActionResult Index([FromQuery] ProductFilter filter)
         {
-            var products = _productRepository.FetchAll();
-            var paginatedProducts = PaginatedList<Product>.Create(products, page, size);
+            /* 
+             * Here it's doing the filter and pagination in application
+             * Best approach is actually doing it in DB so the memory wont overused
+             */
+            var products = _productRepository.FetchAll().Where(p => p.Name.ToLower().Contains(filter.Name.ToLower())).ToList();
+
+            var paginatedProducts = PaginatedList<Product>.Create(products, filter.Page, filter.Size);
             return View("Index", paginatedProducts);
         }
     }

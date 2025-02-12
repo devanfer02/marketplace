@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Marketplace.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.ViewModel
 {
@@ -77,5 +78,17 @@ namespace Marketplace.ViewModel
                 ImageUrl = product.ImageUrl
             };
         }
+    }
+
+    public class ProductFilter
+    {
+        [FromQuery(Name = "page")]
+        public int Page { get; set; } = 1;
+
+        [FromQuery(Name = "size")]
+        public int Size { get; set; } = 10;
+
+        [FromQuery(Name = "name")]
+        public string Name { get; set; } = "";
     }
 }

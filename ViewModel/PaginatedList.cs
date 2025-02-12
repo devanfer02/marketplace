@@ -16,7 +16,7 @@ namespace Marketplace.ViewModel
         public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalPages;
 
-        public static PaginatedList<T> Create(ICollection<T> source, int pageIndex, int pageSize)
+        public static PaginatedList<T> Create(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             var totalPages = (int)Math.Ceiling(source.Count() / (double)pageSize);
             var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
