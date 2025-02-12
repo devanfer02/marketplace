@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Marketplace.ViewModel.ProductRequestViewModel
 @{
+    Layout = "_Layout";
+    ViewData["Title"] = "Edit Product";
+}
+
+<main class="tw-min-h-screen">
+    <section class="tw-container tw-mx-auto tw-mt-10 tw-max-w-5xl tw-bg-white tw-shadow-lg tw-rounded-lg tw-p-6">
+        <h2 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-6">Edit Product</h2>
+        <div class="tw-flex tw-justify-center tw-self-center tw-items-center tw-gap-10">
+            @if(!string.IsNullOrEmpty(Model.ImageUrl))
+          {
+            <div class="tw-w-2/3 tw-pb-10 tw-mb-10">
+              <img src="@Model.ImageUrl" class="" />
+            </div>
+          }
+          <form action="@Url.Action("UpdateProduct", "Product", new { id = @Model.Id })" method="post" class="tw-space-y-4 tw-w-full" enctype="multipart/form-data">
+              @Html.AntiForgeryToken()
+              <div>
+                  <label class="tw-block tw-font-medium tw-mb-1" asp-for="Name">Product Name</label>
+                  <input asp-for="Name" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500" />
+                  <span asp-validation-for="Name" class="tw-text-red-500 tw-text-sm"></span>
+              </div>
+
+              <div>
+                  <label class="tw-block tw-font-medium tw-mb-1" asp-for="Stock">Stock</label>
+                  <input asp-for="Stock" type="number" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500" />
+                  <span asp-validation-for="Stock" class="tw-text-red-500 tw-text-sm"></span>
+              </div>
+
+              <div>
+                  <label class="tw-block tw-font-medium tw-mb-1" asp-for="Price">Price</label>
+                  <input asp-for="Price" type="number" step="0.01" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500" />
+                  <span asp-validation-for="Price" class="tw-text-red-500 tw-text-sm"></span>
+              </div>
+
+              <div>
+                  <label class="tw-block tw-font-medium tw-mb-1" asp-for="Description">Description</label>
+                  <textarea asp-for="Description" rows="4" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500 tw-resize-none"></textarea>
+                  <span asp-validation-for="Description" class="tw-text-red-500 tw-text-sm"></span>
+              </div>
+
+              <div>
+                  <label class="tw-block tw-font-medium tw-mb-1" asp-for="Image">Upload Product Image</label>
+                  <input asp-for="Image" type="file" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500" accept=".png, .jpg, .jpeg" />
+                  <span asp-validation-for="Image" class="tw-text-red-500 tw-text-sm"></span>
+              </div>
+
+              <div class="tw-text-center">
+                  <button type="submit" class="tw-bg-blue-600 tw-text-white tw-py-2 tw-px-6 tw-rounded tw-font-semibold hover:tw-bg-blue-700">
+                      Update Product
+                  </button>
+              </div>
+          </form>
+        </div>
+    </section>
+</main>
+
+@section ValidationScripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

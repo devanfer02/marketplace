@@ -10,7 +10,6 @@
 
         <form action="@Url.Action("CreateProduct", "Product")" method="post" class="tw-space-y-4" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-
             <div>
                 <label class="tw-block tw-font-medium tw-mb-1" asp-for="Name">Product Name</label>
                 <input asp-for="Name" class="tw-w-full tw-border tw-rounded tw-p-2 tw-outline-none focus:tw-border-blue-500" />

@@ -5,6 +5,7 @@ namespace Marketplace.ViewModel
 {
     public class ProductRequestViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -16,9 +17,9 @@ namespace Marketplace.ViewModel
         [Required]
         [MinLength(10)]
         public string Description { get; set; }
+        public string ImageUrl { get; set;  }
 
-        [Required]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public Product ToProduct(string imageUrl)
         {
@@ -32,14 +33,48 @@ namespace Marketplace.ViewModel
             };
         }
 
+        public Product Patch(Product product, string imageUrl = "")
+        {
+
+            if (!string.IsNullOrWhiteSpace(this.Name))
+            {
+                product.Name = this.Name;
+            }
+
+            if (this.Stock >= 0) 
+            {
+                product.Stock = this.Stock;
+            }
+
+            if (this.Price > 0)
+            {
+                product.Price = this.Price;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.Description))
+            {
+                product.Description = this.Description;
+            }
+
+            if (!string.IsNullOrWhiteSpace(imageUrl))
+            {
+                product.ImageUrl = imageUrl;
+            }
+
+            return product;
+        }
+
+
         public static ProductRequestViewModel FromModel(Product product)
         {
             return new ProductRequestViewModel()
             {
+                Id = product.Id,
                 Name = product.Name,
                 Stock = product.Stock,
                 Price = product.Price,
-                Description = product.Description
+                Description = product.Description,
+                ImageUrl = product.ImageUrl
             };
         }
     }

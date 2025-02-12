@@ -43,6 +43,30 @@ namespace Marketplace.Controllers
             return View();
         }
 
+        [Route("edit/{id}")]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var product = await _productRepository.FetchById(id);
+
+                if (product == null)
+                {
+                    TempData["ErrorMessage"] = "Product not found";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return View("Edit", ProductRequestViewModel.FromModel(product));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something error happened";
+                _logger.LogError("ERROR: " + ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -70,10 +94,11 @@ namespace Marketplace.Controllers
             }
         }
 
-        [Route("/edit/{id}")]
+        [HttpPost]
         [Authorize]
+        [Route("update/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> UpdateProduct(int id, ProductRequestViewModel model)
         {
             try
             {
@@ -81,22 +106,34 @@ namespace Marketplace.Controllers
 
                 if (product == null)
                 {
-                    ViewBag.ErrorMessage = "Product not found";
-                    return View();
+                    TempData["ErrorMessage"] = "Product not found";
+                    return RedirectToAction("Index", "Home"); 
                 }
 
-                return View(ProductRequestViewModel.FromModel(product));
+                if (model.Image != null)
+                {
+                    model.ImageUrl = await _imageUploader.Update(model.Image, product.ImageUrl);
+                }
+
+                product = model.Patch(product, model.ImageUrl);
+
+                await _productRepository.UpdateProduct(product);
+
+                TempData["SuccessMessage"] = "Successfully update product";
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                return View();
+                TempData["ErrorMessage"] = "Failed to update product";
+                _logger.LogError("ERROR: " + ex.Message);
+                return RedirectToAction("Index", "Home");
             }
             
         }
 
         [HttpDelete]
-        [Route("{id}")]
         [Authorize]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

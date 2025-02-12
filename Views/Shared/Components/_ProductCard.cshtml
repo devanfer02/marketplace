@@ -20,7 +20,7 @@
         @if(isAuthenticated)
         {
           <div class="tw-flex tw-gap-5 tw-self-center tw-items-center tw-mt-2">
-            <a href="@Url.Action("Update", "Product", new {id = @Model.Id})" class="tw-bg-green-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-1/2 tw-text-center">Edit</a>
+            <a href="@Url.Action("Edit", "Product", new {id = @Model.Id})" class="tw-bg-green-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-1/2 tw-text-center">Edit</a>
               <form id="deleteForm-@Model.Id" class="tw-w-1/2 product-delete-form" data-id="@Model.Id">
                   @Html.AntiForgeryToken()
                   <button type="button" class="tw-bg-red-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-full delete-btn">
