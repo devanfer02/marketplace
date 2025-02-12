@@ -12,11 +12,13 @@
 
         <ul class="tw-flex tw-gap-6">
             <li><a href="/" class="tw-text-gray-700 tw-hover:text-blue-500">Home</a></li>
-            <li><a href="/products" class="tw-text-gray-700 tw-hover:text-blue-500">Products</a></li>
-            <li><a href="/about" class="tw-text-gray-700 tw-hover:text-blue-500">About</a></li>
+            
 
             @if (isAuthenticated)
             {
+                <li>
+                  <a href="@Url.Action("Create", "Product")" class="tw-text-gray-700 tw-hover:text-blue-500">Create Product</a>
+                </li>
                 <li>
                     <span class="tw-text-gray-700 tw-font-semibold">Hello, @user.Name!</span>
                 </li>

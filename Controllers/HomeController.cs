@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Marketplace.Controllers
 {
     [Route("")]
-    [Route("home")]
     public class HomeController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -18,7 +17,7 @@ namespace Marketplace.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index([FromQuery] int page = 1, [FromQuery] int size = 10)
+        public IActionResult Index([FromQuery] int page = 1, [FromQuery] int size = 12)
         {
             var products = _productRepository.FetchAll();
             var paginatedProducts = PaginatedList<Product>.Create(products, page, size);

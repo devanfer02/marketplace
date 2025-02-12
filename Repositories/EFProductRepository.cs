@@ -1,5 +1,7 @@
 ﻿using Marketplace.Infra.Database;
+using Marketplace.Infra.Exceptions;
 using Marketplace.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Repositories
 {
@@ -21,25 +23,34 @@ namespace Marketplace.Repositories
         }
 
         public ICollection<Product> FetchAll() => _access.Products.OrderByDescending(p => p.CreatedAt).ToList();
+        public Task<Product> FetchById(int id) => _access.Products.AsNoTracking().FirstAsync(p => p.Id == id);
 
-        public Task<Product> CreateProduct(Product product)
+        public async Task<Product> CreateProduct(Product product)
         {
-            throw new NotImplementedException();
+            _access.Products.Add(product);
+            await _access.SaveChangesAsync();
+            return product;
         }
 
-        public Task<Product> DeleteProduct(int id)
+        public async Task<Product> DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var product = await _access.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                throw new AppException("Product not found");
+            }
+
+            _access.Products.Remove(product);
+            await _access.SaveChangesAsync();
+            return product;
         }
 
-        public Task<Product> FetchById(int id)
+        public async Task<Product> UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateProduct(Product product)
-        {
-            throw new NotImplementedException();
+            _access.Products.Update(product);
+            await _access.SaveChangesAsync();
+            return product;
         }
     }
 }

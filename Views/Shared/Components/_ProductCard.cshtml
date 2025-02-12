@@ -1,13 +1,33 @@
-﻿@model Marketplace.Models.Product
+﻿@inject Marketplace.Packages.Auth.AuthManager AuthManager
+@model Marketplace.Models.Product
+
+@{
+    var user = AuthManager.GetUser();
+    var isAuthenticated = user != null;
+}
 
 <div class="tw-bg-white tw-rounded-lg tw-shadow-md tw-overflow-hidden tw-w-full tw-mx-auto">
-    <img src="https://placehold.co/300" alt="@Model.Name" class="tw-w-full tw-h-40 tw-object-cover">
+    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://placehold.co/300" : Model.ImageUrl)" class="tw-w-full tw-h-40 tw-object-cover" />
     <div class="tw-p-4">
         <h3 class="tw-text-lg tw-font-semibold">@Model.Name</h3>
         <p class="tw-text-gray-600">@Model.Price.ToString("C")</p>
         <p class="tw-text-sm tw-text-gray-500">Stock: @Model.Stock</p>
-        <button class="tw-mt-2 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded-md tw-w-full hover:tw-bg-blue-600">
-            Add to Cart
-        </button>
+        <a class="tw-mt-2 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded-md tw-block tw-text-center hover:tw-bg-blue-600"
+           href="@Url.Action("Show", "Product", new { id = Model.Id })">
+            Show
+        </a>
+
+        @if(isAuthenticated)
+        {
+          <div class="tw-flex tw-gap-5 tw-self-center tw-items-center tw-mt-2">
+            <a href="@Url.Action("Update", "Product", new {id = @Model.Id})" class="tw-bg-green-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-1/2 tw-text-center">Edit</a>
+              <form id="deleteForm-@Model.Id" class="tw-w-1/2 product-delete-form" data-id="@Model.Id">
+                  @Html.AntiForgeryToken()
+                  <button type="button" class="tw-bg-red-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-full delete-btn">
+                      Delete
+                  </button>
+              </form>
+          </div>
+        }
     </div>
 </div>

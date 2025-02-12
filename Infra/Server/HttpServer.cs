@@ -2,6 +2,7 @@
 using Marketplace.Infra.Database;
 using Marketplace.Packages.Auth;
 using Marketplace.Packages.HostedServices;
+using Marketplace.Packages.Uploader;
 using Marketplace.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,7 @@ namespace Marketplace.Infra.Server
             // register for DI
             builder.Services.AddScoped<IUserRepository, EFUserRepository>();
             builder.Services.AddScoped<IProductRepository, EFProductRepository>();
+            builder.Services.AddScoped<IImageUploader, ImageUploader>();
             builder.Services.AddScoped<AuthManager>();
 
             return builder;

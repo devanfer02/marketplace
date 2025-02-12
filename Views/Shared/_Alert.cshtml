@@ -1,0 +1,18 @@
+﻿@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="tw-bg-green-100 tw-text-green-800 tw-border tw-border-green-300 tw-p-4 tw-mb-4 tw-rounded">
+        @successMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="tw-bg-red-100 tw-text-red-800 tw-border tw-border-red-300 tw-p-4 tw-mb-4 tw-rounded">
+        @errorMessage
+    </div>
+}
