@@ -1,0 +1,44 @@
+﻿@using Marketplace.Packages.Auth
+@inject AuthManager AuthManager
+@model Marketplace.Models.Product
+@{
+    ViewData["Title"] = "Product " + Model.Name;
+    Layout = "_Layout";
+    var user = AuthManager.GetUser();
+    var isAuthenticated = user != null; 
+}
+<main class="tw-min-h-screen">
+    <section class="tw-container tw-mx-auto tw-my-12 tw-px-4">
+        <div class="tw-max-w-3xl tw-mx-auto tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6">
+            <div class="tw-flex tw-flex-col md:tw-flex-row tw-gap-6">
+                <div class="tw-w-full md:tw-w-1/2">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://placehold.co/300" : Model.ImageUrl)" alt="@Model.Name" class="tw-w-full tw-object-cover tw-rounded">
+                </div>
+
+                <div class="tw-w-full md:tw-w-1/2">
+                    <h1 class="tw-text-2xl tw-font-bold tw-text-gray-800">@Model.Name</h1>
+                    <p class="tw-text-gray-600 tw-mt-2">@Model.Description</p>
+                    <p class="tw-text-lg tw-font-semibold tw-text-blue-600 tw-mt-4">Rp. @Model.Price</p>
+                    <p class="tw-text-gray-500 tw-text-sm">Stock: @Model.Stock</p>
+                    <p class="tw-text-gray-400 tw-text-sm tw-mt-2">Updated at: @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+                    @if (isAuthenticated)
+                    {
+                        <div class="tw-flex tw-gap-5 tw-mt-6">
+                            <a href="@Url.Action("Edit", "Product", new { id = @Model.Id })" class="tw-bg-green-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-1/2 tw-text-center">Edit</a>
+                            <form id="deleteForm-@Model.Id" class="tw-w-1/2 product-delete-form" data-id="@Model.Id">
+                                @Html.AntiForgeryToken()
+                                <button type="button" class="tw-bg-red-500 tw-text-white tw-py-2 tw-px-4 tw-rounded tw-w-full delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section AjaxScripts {
+    <script src="~/Scripts/ProductAjax.js"></script>
+}

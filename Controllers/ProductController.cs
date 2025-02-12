@@ -38,9 +38,26 @@ namespace Marketplace.Controllers
         }
 
         [Route("show/{id}")]
-        public async Task<IActionResult> Show()
+        public async Task<IActionResult> Show(int id)
         {
-            return View();
+            try
+            {
+                var product = await _productRepository.FetchById(id);
+
+                if (product == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Product.Show|ERR: " + ex.Message);
+                TempData["ErrorMessage"] = "Something error happened";
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
         [Route("edit/{id}")]
