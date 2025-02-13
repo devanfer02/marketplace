@@ -1,0 +1,31 @@
+﻿@model Marketplace.Models.User
+@{
+    Layout = "_Layout";
+}
+
+<div class="tw-bg-white tw-shadow-md tw-rounded-lg tw-p-6 tw-mb-6 tw-container tw-px-10 tw-mx-10 tw-mt-10">
+    <h2 class="tw-text-2xl tw-font-bold tw-mb-4 tw-text-center">User Profile</h2>
+    <div class="tw-flex tw-justify-center">
+      <div>
+            <h3 class="tw-text-xl tw-font-semibold tw-mb-2">@Model.Fullname</h3>
+            <p class="tw-text-gray-600"><strong>Email:</strong> @Model.Email</p>
+            <p class="tw-text-gray-600"><strong>Joined:</strong> @Model.CreatedAt.ToString("dd MMMM yyyy")</p>
+      </div>
+    </div>
+</div>
+
+<h2 class="tw-text-2xl tw-font-bold tw-mb-4 tw-text-center">Products</h2>
+
+@if (Model.Products.Any())
+{
+    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-6 tw-px-10">
+        @foreach (var product in Model.Products)
+        {
+            <partial name="Components/_ProductCard" model="product" />
+        }
+    </div>
+}
+else
+{
+    <p class="tw-text-gray-600">User has not sell any products yet</p>
+}

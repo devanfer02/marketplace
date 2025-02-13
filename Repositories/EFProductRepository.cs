@@ -22,8 +22,17 @@ namespace Marketplace.Repositories
             _access = access;
         }
 
-        public ICollection<Product> FetchAll() => _access.Products.OrderByDescending(p => p.CreatedAt).ToList();
-        public Task<Product> FetchById(int id) => _access.Products.AsNoTracking().FirstAsync(p => p.Id == id);
+        public ICollection<Product> FetchAll() => 
+            _access.Products
+            .OrderByDescending(p => p.CreatedAt)
+            .AsNoTracking()
+            .Include("User")
+            .ToList();
+        public Task<Product> FetchById(int id) => 
+            _access.Products
+            .AsNoTracking()
+            .Include("User")
+            .FirstAsync(p => p.Id == id);
 
         public async Task<Product> CreateProduct(Product product)
         {

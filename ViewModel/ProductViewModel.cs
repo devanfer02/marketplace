@@ -6,7 +6,7 @@ namespace Marketplace.ViewModel
 {
     public class ProductRequestViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -18,7 +18,7 @@ namespace Marketplace.ViewModel
         [Required]
         [MinLength(10)]
         public string Description { get; set; }
-        public string ImageUrl { get; set;  }
+        public string? ImageUrl { get; set;  }
 
         public IFormFile? Image { get; set; }
 

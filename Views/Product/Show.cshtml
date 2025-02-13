@@ -20,6 +20,7 @@
                     <p class="tw-text-gray-600 tw-mt-2">@Model.Description</p>
                     <p class="tw-text-lg tw-font-semibold tw-text-blue-600 tw-mt-4">Rp. @Model.Price</p>
                     <p class="tw-text-gray-500 tw-text-sm">Stock: @Model.Stock</p>
+                    <p class="tw-text-gray-400 tw-text-sm tw-mt-2">Created by: @Model.User.Fullname</p>
                     <p class="tw-text-gray-400 tw-text-sm tw-mt-2">Updated at: @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</p>
                     @if (isAuthenticated)
                     {

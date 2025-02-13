@@ -14,6 +14,8 @@ namespace Marketplace.Models
         public string Fullname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+
+        public ICollection<Product> Products { get; set; } = new List<Product>();
         
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.Now;

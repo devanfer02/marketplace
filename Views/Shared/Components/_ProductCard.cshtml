@@ -12,6 +12,8 @@
         <h3 class="tw-text-lg tw-font-semibold">@Model.Name</h3>
         <p class="tw-text-gray-600">@Model.Price.ToString("C")</p>
         <p class="tw-text-sm tw-text-gray-500">Stock: @Model.Stock</p>
+        <p class="tw-text-sm tw-text-gray-500 tw-my-1">CreatedAt: @Model.CreatedAt.ToString("dd MMMM yyyy")</p>
+        <p class="tw-text-sm tw-text-gray-500 tw-my-1">CreatedBy: @Model.User.Fullname</p>
         <a class="tw-mt-2 tw-bg-blue-500 tw-text-white tw-py-2 tw-px-4 tw-rounded-md tw-block tw-text-center hover:tw-bg-blue-600"
            href="@Url.Action("Show", "Product", new { id = Model.Id })">
             Show

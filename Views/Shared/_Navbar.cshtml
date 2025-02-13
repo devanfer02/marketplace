@@ -20,7 +20,9 @@
                   <a href="@Url.Action("Create", "Product")" class="tw-text-gray-700 tw-hover:text-blue-500">Create Product</a>
                 </li>
                 <li>
-                    <span class="tw-text-gray-700 tw-font-semibold">Hello, @user.Name!</span>
+                    <a href="@Url.Action("Profile", "User")" class="tw-text-gray-700 tw-font-semibold tw-hover:text-red-800">
+                        My Profile
+                    </a>
                 </li>
                 <li>
                     <a href="@Url.Action("Logout", "Auth")" class="tw-text-red-600 tw-font-semibold tw-hover:text-red-800">

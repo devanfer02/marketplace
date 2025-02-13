@@ -1,4 +1,5 @@
 ﻿using Marketplace.Infra.Exceptions;
+using Marketplace.Packages.Auth;
 using Marketplace.Packages.Uploader;
 using Marketplace.Repositories;
 using Marketplace.ViewModel;
@@ -13,16 +14,19 @@ namespace Marketplace.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ILogger<ProductController> _logger;
         private readonly IImageUploader _imageUploader;
+        private readonly AuthManager _authManager;
 
         public ProductController(
             IProductRepository productRepository, 
             ILogger<ProductController> logger,
-            IImageUploader imageUploader
+            IImageUploader imageUploader,
+            AuthManager authManager
         )
         {
             _productRepository = productRepository;
             _logger = logger;
             _imageUploader = imageUploader;
+            _authManager = authManager;
         }
 
         public IActionResult Index()
@@ -95,8 +99,10 @@ namespace Marketplace.Controllers
             }
             try
             {
+                var user = _authManager.GetUser();
                 var imageUrl = await _imageUploader.Upload(model.Image);
                 var product = model.ToProduct(imageUrl);
+                product.UserId = user!.Id;
 
                 await _productRepository.CreateProduct(product);
 

@@ -8,6 +8,7 @@ namespace Marketplace.Repositories
 {
     public interface IUserRepository
     {
+        public Task<User?> GetUserByID(string id);
         public Task<User?> GetUserByEmail(string email);
         public Task<User> CreateUser(User user);
         public Task UpdateUser(User user);  
@@ -40,10 +41,16 @@ namespace Marketplace.Repositories
             return user;
         }
 
-        public async Task<User?> GetUserByEmail(string email)
-        {
-            return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
-        }
+        public async Task<User?> GetUserByID(string id) => 
+             await _dbContext.Users
+                .AsNoTracking()
+                .Include("Products")
+                .FirstAsync(u => u.Id == id);
+
+        public async Task<User?> GetUserByEmail(string email) => 
+            await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email == email);
 
         public async Task UpdateUser(User user)
         {
